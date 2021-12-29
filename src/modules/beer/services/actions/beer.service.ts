@@ -10,8 +10,8 @@ export default class BeerService {
     private readonly beerRepository: BeerRepository,
     private readonly logService: Log,
   ) {}
-  public create(beer: BeerRequest) {
+  public async create(beer: BeerRequest) {
     this.beerRepository.save(beer);
-    this.logService.save(`Se guarda cerveza ${beer.name}`);
+    await this.logService.save(`Se guarda cerveza ${beer.name}`);
   }
 }
