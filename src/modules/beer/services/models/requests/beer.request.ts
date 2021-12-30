@@ -1,5 +1,10 @@
 /* eslint-disable prettier/prettier */
-export interface BeerRequest {
+import { IsString } from 'class-validator';
+
+export class BeerRequest {
+  @IsString()
   name: string;
+
+  @IsString()
   brand: string;
 }
