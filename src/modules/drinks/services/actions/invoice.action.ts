@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Drink } from '../models/classes/drink.model';
+import { Drink } from '../models/classes/drink.entity';
 
 export default class InvoiceAction {
   public getTotal(drinks: Drink[]) {
