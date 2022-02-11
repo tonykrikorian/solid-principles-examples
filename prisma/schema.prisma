@@ -10,18 +10,44 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id    Int     @default(autoincrement()) @id
-  email String  @unique
-  name  String?
-  posts Post[]
+model Post{
+   id Int @id @default(autoincrement())
+   comments Comment[] //UN post puede tener varios comentarios
+   @@map("posts")
 }
 
-model Post {
-  id        Int      @default(autoincrement()) @id
-  title     String
-  content   String?
-  published Boolean? @default(false)
-  author    User?    @relation(fields: [authorId], references: [id])
-  authorId  Int?
+model Comment{
+  id Int @id @default(autoincrement())
+  title String
+  content String
+  post Post? @relation(fields: [postId], references: id) //Un comentario puede tener un solo Post
+  postId Int?
+
+  @@map("comments")
 }
+
+
+model Expense{
+  id Int @id @default(autoincrement())
+  ammount Decimal @default(0)
+  createdAt DateTime @default(now())
+  category Category?  @relation(fields: [categoryId], references: id)
+  categoryId Int?
+  state ExpenseState @default(NOT_PAID)
+  @@map("expenses")
+
+}
+
+model Category{
+  id Int @id @default(autoincrement())
+  title String
+  createdAt DateTime @default(now())
+  expenses Expense[] //Una categoria puede tener varios gastos
+  @@map("categories")  
+}
+
+enum ExpenseState{
+  PAID
+  NOT_PAID
+}
+
