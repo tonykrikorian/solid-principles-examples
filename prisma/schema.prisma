@@ -10,21 +10,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Post{
-   id Int @id @default(autoincrement())
-   comments Comment[] //UN post puede tener varios comentarios
-   @@map("posts")
-}
 
-model Comment{
-  id Int @id @default(autoincrement())
-  title String
-  content String
-  post Post? @relation(fields: [postId], references: id) //Un comentario puede tener un solo Post
-  postId Int?
 
-  @@map("comments")
-}
 
 
 model Expense{
