@@ -38,3 +38,12 @@ enum ExpenseState{
   NOT_PAID
 }
 
+model Period{
+  id Int @id @default(autoincrement())
+  month String
+  year  String
+  salary Decimal
+  period String
+  createdAt DateTime @default(now())
+  @@map("categories_expenses_values")
+}
