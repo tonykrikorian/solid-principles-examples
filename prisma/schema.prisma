@@ -39,11 +39,35 @@ enum ExpenseState{
 }
 
 model Period{
-  id Int @id @default(autoincrement())
+  id Int        @id @default(autoincrement())
   month String
   year  String
-  salary Decimal
+  salary Float
   period String
   createdAt DateTime @default(now())
-  @@map("categories_expenses_values")
+  ExpensseCategories CategoriesExpensesInPeriods[]
+  @@map("periods")
+  @@unique([period])
+}
+
+
+model ExpenseCategory{
+  id Int        @id @default(autoincrement())
+  salaryPercentage Int
+  ammount Decimal
+  createdAt DateTime @default(now())
+  periods CategoriesExpensesInPeriods[]
+  @@map("categories_expenses")
+
+}
+
+
+model CategoriesExpensesInPeriods{
+  period Period      @relation(fields: [periodId], references: [id])
+  periodId Int
+  expenseCategory ExpenseCategory  @relation(fields: [expenseCategoryId], references: [id])
+  expenseCategoryId Int
+  createdAt DateTime @default(now())
+  @@id([periodId, expenseCategoryId])
+
 }
