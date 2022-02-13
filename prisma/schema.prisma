@@ -30,6 +30,7 @@ model Category{
   title String
   createdAt DateTime @default(now())
   expenses Expense[] //Una categoria puede tener varios gastos
+  expenseCategories ExpenseCategory[]
   @@map("categories")  
 }
 
@@ -57,6 +58,8 @@ model ExpenseCategory{
   ammount Decimal
   createdAt DateTime @default(now())
   periods CategoriesExpensesInPeriods[]
+  category Category?  @relation(fields: [categoryId], references: id)
+  categoryId Int
   @@map("categories_expenses")
 
 }

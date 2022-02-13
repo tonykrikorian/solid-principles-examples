@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import PrismaService from 'src/prisma.service';
 import { AddCategoryRequest } from './services/models/requests/addCategorie.request';
 import { AddExpenseCategoryRequest } from './services/models/requests/addExpenseCategory.request';
@@ -9,7 +9,7 @@ import { AddPeriodRequest } from './services/models/requests/AddPeriod.request';
 export default class PrismaOrmController {
   constructor(private readonly prismaService: PrismaService) {}
 
-  @Post('category')
+  @Post('add-category')
   public addCategory(@Body() body: AddCategoryRequest) {
     return this.prismaService.category.create({
       data: {
@@ -32,7 +32,7 @@ export default class PrismaOrmController {
     const { salary, id } = await this.prismaService.period.findFirst({
       where: { period: body.period },
     });
-    const finalAmmount = await this.calculateExpenseCategoryAmmount(
+    const finalAmmount = this.calculateExpenseCategoryAmmount(
       body.salaryPercentage,
       salary,
     );
@@ -41,6 +41,7 @@ export default class PrismaOrmController {
       data: {
         salaryPercentage: body.salaryPercentage,
         ammount: finalAmmount,
+        categoryId: body.categoryId,
         periods: {
           create: [
             {
@@ -52,10 +53,19 @@ export default class PrismaOrmController {
     });
   }
 
-  private async calculateExpenseCategoryAmmount(
+  @Get('expenses-categories')
+  public getExpensesCategories() {
+    return this.prismaService.expenseCategory.findMany({
+      include: {
+        category: true,
+      },
+    });
+  }
+
+  private calculateExpenseCategoryAmmount(
     percentage: number,
     salary: number,
-  ): Promise<number> {
+  ): number {
     const finalAmmount = Number(salary) * (percentage / 100);
     return finalAmmount;
   }
