@@ -45,7 +45,7 @@ model Period{
   salary Float
   period String
   createdAt DateTime @default(now())
-  ExpensseCategories CategoriesExpensesInPeriods[]
+  expensesCategories CategoriesExpensesInPeriods[]
   @@map("periods")
   @@unique([period])
 }
