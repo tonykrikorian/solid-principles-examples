@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
 import BaseModel from './base.model';
+import * as numeral from 'numeral';
 
 export default class MainCategory extends BaseModel {
   public salary: number;
@@ -35,10 +36,12 @@ export default class MainCategory extends BaseModel {
     return {
       id: this.id,
       name: this.name,
-      salary: `${this.salary} ${this.currency}`,
-      percentage: `${this.percentage}%`,
-      balance: `${this.balance} ${this.currency}`,
-      theoricalAmmount: `${this.theoricalAmmount} ${this.currency}`,
+      salary: `${numeral(this.salary).format('0,0')} ${this.currency}`,
+      percentage: `${numeral(this.percentage).format('0.00%')}`,
+      balance: `${numeral(this.salary).format('0,0')} ${this.currency}`,
+      theoricalAmmount: `${numeral(this.theoricalAmmount).format('0,0')} ${
+        this.currency
+      }`,
       createdAt: this.createdAt,
     };
   }
