@@ -1,8 +1,19 @@
 /* eslint-disable prettier/prettier */
-import Expense from '../models/classes/expense.model';
 
-const funExpense = new Expense(1000, 'Compra amazon Prime anual');
+import CalculatesCategories from '../models/classes/calculatesCategories.model';
+import MainCategory from '../models/classes/mainCategory.model';
 
-funExpense.saveExpense();
+const funCategory = new MainCategory('Diversion', 2500000, 80);
 
-funExpense.convertInUSD();
+const fixedExpenses = new MainCategory('Gastos fijos', 2500000, 30);
+
+const calculate = new CalculatesCategories([funCategory, fixedExpenses]);
+const isTotalAmmountValid = calculate.isAmmountGraterThanSalary();
+const isTotalPercentageValid = calculate.arePercentagesGraterThan100Percent();
+
+if (isTotalAmmountValid.status && isTotalPercentageValid.status) {
+  [funCategory, fixedExpenses].forEach((value) => value.save());
+} else {
+  console.table(isTotalAmmountValid);
+  console.table(isTotalPercentageValid);
+}
