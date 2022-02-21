@@ -9,9 +9,6 @@ export default abstract class BaseModel {
     this.createdAt = this.createDate();
     this.id = this.generateId();
   }
-
-  protected abstract save(): void;
-
   private generateId(): number {
     return Math.floor(Math.random() * 10);
   }
@@ -19,4 +16,5 @@ export default abstract class BaseModel {
   private createDate() {
     return new Date().toLocaleString();
   }
+  protected abstract save(): void;
 }
