@@ -37,8 +37,8 @@ export default class MainCategory extends BaseModel {
       id: this.id,
       name: this.name,
       salary: `${numeral(this.salary).format('0,0')} ${this.currency}`,
-      percentage: `${numeral(this.percentage).format('0.00%')}`,
-      balance: `${numeral(this.salary).format('0,0')} ${this.currency}`,
+      percentage: `${numeral(this.percentage / 100).format('0.00%')}`,
+      balance: `${numeral(this.balance).format('0,0')} ${this.currency}`,
       theoricalAmmount: `${numeral(this.theoricalAmmount).format('0,0')} ${
         this.currency
       }`,
