@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 
-import CalculatesCategories from '../models/classes/calculatesCategories.model';
+import CalculatesCategories from '../models/classes/expenses/calculatesCategories.model';
 import MainCategory from '../models/classes/expenses/mainCategory.model';
 
 const funCategory = new MainCategory('Diversion', 2500000, 10);
