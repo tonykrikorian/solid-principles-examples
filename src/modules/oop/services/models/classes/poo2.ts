@@ -45,6 +45,10 @@ class MainCategory extends BaseModel implements IMainCategory {
   save(): void {
     this.calculateTheoricalAmmount();
     if (this.isGraterThanSalary()) {
+      throw new BadRequestException({
+        message: 'EL monto teorico de la categoria es mayor al sueldo',
+      });
+    } else {
       const response = {
         id: this.id,
         salary: this.salary,
@@ -54,10 +58,6 @@ class MainCategory extends BaseModel implements IMainCategory {
         createdAt: this.createdAt,
       };
       console.table(response);
-    } else {
-      throw new BadRequestException({
-        message: 'EL monto teorico de la categoria es mayor al sueldo',
-      });
     }
   }
 }
