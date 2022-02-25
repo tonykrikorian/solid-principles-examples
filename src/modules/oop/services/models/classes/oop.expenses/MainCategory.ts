@@ -1,22 +1,17 @@
 /* eslint-disable prettier/prettier */
-interface IBaseModel {
-  text: string;
+import { BadRequestException } from '@nestjs/common';
+import { BaseModel } from './BaseModel';
+import { IMainCategory } from './IMainCategory';
 
-  save(): void;
-}
-
-interface IMainCategory extends IBaseModel {
-  salary: number;
-  percentage: number;
-}
-
-class MainCategory implements IMainCategory {
-  private theoricalAmmount: number;
+export class MainCategory extends BaseModel implements IMainCategory {
+  public theoricalAmmount: number;
   constructor(
     public salary: number,
     public percentage: number,
     public text: string,
-  ) {}
+  ) {
+    super();
+  }
 
   private calculateTheoricalAmmount() {
     this.theoricalAmmount = this.salary * (this.percentage / 100);
@@ -26,16 +21,21 @@ class MainCategory implements IMainCategory {
     return this.theoricalAmmount > this.salary;
   }
   save(): void {
+    this.calculateTheoricalAmmount();
     if (this.isGraterThanSalary()) {
+      throw new BadRequestException({
+        message: 'EL monto teorico de la categoria es mayor al sueldo',
+      });
+    } else {
       const response = {
+        id: this.id,
         salary: this.salary,
         text: this.text,
         percentage: this.percentage,
         theoricalAmmount: this.theoricalAmmount,
+        createdAt: this.createdAt,
       };
       console.table(response);
-    } else {
-      const data = 'xx';
     }
   }
 }
