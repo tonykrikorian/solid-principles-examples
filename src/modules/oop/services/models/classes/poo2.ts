@@ -1,10 +1,32 @@
 /* eslint-disable prettier/prettier */
-import { BadRequestException } from '@nestjs/common';
-import { BaseModel } from './BaseModel';
-import { IMainCategory } from './IMainCategory';
 
-export class MainCategory extends BaseModel implements IMainCategory {
-  public theoricalAmmount: number;
+import { BadRequestException } from '@nestjs/common';
+
+abstract class BaseModel {
+  protected id: number;
+  protected createdAt: string;
+  constructor() {
+    this.id = this.generateId();
+    this.createdAt = new Date().toLocaleDateString();
+  }
+
+  private generateId() {
+    return Math.floor(Math.random() * 10);
+  }
+}
+interface IBaseModel {
+  text: string;
+
+  save(): void;
+}
+
+interface IMainCategory extends IBaseModel {
+  salary: number;
+  percentage: number;
+}
+
+class MainCategory extends BaseModel implements IMainCategory {
+  private theoricalAmmount: number;
   constructor(
     public salary: number,
     public percentage: number,
@@ -23,10 +45,6 @@ export class MainCategory extends BaseModel implements IMainCategory {
   save(): void {
     this.calculateTheoricalAmmount();
     if (this.isGraterThanSalary()) {
-      throw new BadRequestException({
-        message: 'EL monto teorico de la categoria es mayor al sueldo',
-      });
-    } else {
       const response = {
         id: this.id,
         salary: this.salary,
@@ -36,6 +54,14 @@ export class MainCategory extends BaseModel implements IMainCategory {
         createdAt: this.createdAt,
       };
       console.table(response);
+    } else {
+      throw new BadRequestException({
+        message: 'EL monto teorico de la categoria es mayor al sueldo',
+      });
     }
   }
 }
+
+const funCategory = new MainCategory(2500000, 10, 'Diversion');
+
+funCategory.save();
