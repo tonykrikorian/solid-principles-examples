@@ -9,11 +9,11 @@ export default abstract class BaseModel {
     this.createdAt = this.createDate();
     this.id = this.generateId();
   }
-  private generateId(): number {
+  protected generateId(): number {
     return Math.floor(Math.random() * 10);
   }
 
-  private createDate() {
+  protected createDate() {
     return new Date().toLocaleString();
   }
   protected abstract save(): void;

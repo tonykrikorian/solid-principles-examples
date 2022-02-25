@@ -1,27 +1,25 @@
 /* eslint-disable prettier/prettier */
-export default class Expense {
-  constructor(public readonly ammount: number, public readonly title: string) {}
+import BaseModel from './base.model';
 
-  public saveExpense() {
+export default class Expense extends BaseModel {
+  private categoryId: number;
+  constructor(ammount: number, name: string, categoryId: number) {
+    super();
+    this.ammount = ammount;
+    this.name = name;
+    this.categoryId = categoryId;
+  }
+
+  protected save(): void {
     const log = {
       id: Math.floor(Math.random()) + 1,
       ammount: `${this.ammount} CLP`,
-      title: this.title,
+      title: this.name,
       createdAt: new Date(),
+      categoryId: this.categoryId,
     };
 
     console.log('Expense Added');
-    console.log(log);
-  }
-
-  public convertInUSD() {
-    const log = {
-      id: Math.floor(Math.random()) + 1,
-      ammount: `${this.ammount / 800} USD`,
-      title: this.title,
-      createdAt: new Date(),
-    };
-
     console.log(log);
   }
 }
