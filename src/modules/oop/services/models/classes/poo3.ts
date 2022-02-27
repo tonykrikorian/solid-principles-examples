@@ -73,13 +73,8 @@ class MainCategories {
   }
 
   public validate() {
-    this.items.forEach((category) => {
-      if (
-        this.calculateTotalMinorThanSalary() &&
-        this.calculateTotalPercentage()
-      )
-        category.save();
-    });
+    if (this.calculateTotalMinorThanSalary() && this.calculateTotalPercentage())
+      console.log('Hola');
   }
 }
 
