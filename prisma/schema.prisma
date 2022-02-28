@@ -5,7 +5,7 @@ generator client {
   provider = "prisma-client-js"
 }
 
-datasource db {
+datasource expenses {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
@@ -14,63 +14,3 @@ datasource db {
 
 
 
-model Expense{
-  id Int @id @default(autoincrement())
-  ammount Decimal @default(0)
-  createdAt DateTime @default(now())
-  category Category?  @relation(fields: [categoryId], references: id)
-  categoryId Int?
-  state ExpenseState @default(NOT_PAID)
-  @@map("expenses")
-
-}
-
-model Category{
-  id Int @id @default(autoincrement())
-  title String
-  createdAt DateTime @default(now())
-  expenses Expense[] //Una categoria puede tener varios gastos
-  expenseCategories ExpenseCategory[]
-  @@map("categories")  
-}
-
-enum ExpenseState{
-  PAID
-  NOT_PAID
-}
-
-model Period{
-  id Int        @id @default(autoincrement())
-  month String
-  year  String
-  salary Float
-  period String
-  createdAt DateTime @default(now())
-  expensesCategories CategoriesExpensesInPeriods[]
-  @@map("periods")
-  @@unique([period])
-}
-
-
-model ExpenseCategory{
-  id Int        @id @default(autoincrement())
-  salaryPercentage Int
-  ammount Decimal
-  createdAt DateTime @default(now())
-  periods CategoriesExpensesInPeriods[]
-  category Category?  @relation(fields: [categoryId], references: id)
-  categoryId Int
-  @@map("categories_expenses")
-
-}
-
-
-model CategoriesExpensesInPeriods{
-  period Period      @relation(fields: [periodId], references: [id])
-  periodId Int
-  expenseCategory ExpenseCategory  @relation(fields: [expenseCategoryId], references: [id])
-  expenseCategoryId Int
-  createdAt DateTime @default(now())
-  @@id([periodId, expenseCategoryId])
-
-}
