@@ -1,12 +1,15 @@
 /* eslint-disable prettier/prettier */
 //Abstract Creator
 
+import { Injectable } from '@nestjs/common';
+
 abstract class SaleFactory {
   public abstract getSale(): ISale;
 }
 
 //Concrete creator
-class StoreSaleFactory extends SaleFactory {
+@Injectable()
+export class StoreSaleFactory extends SaleFactory {
   constructor(private readonly extra: number) {
     super();
   }
@@ -17,7 +20,8 @@ class StoreSaleFactory extends SaleFactory {
 }
 
 //Concrete creator
-class InternetSaleFactory extends SaleFactory {
+@Injectable()
+export class InternetSaleFactory extends SaleFactory {
   constructor(private readonly tax: number, private readonly discount: number) {
     super();
   }
