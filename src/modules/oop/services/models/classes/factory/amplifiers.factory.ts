@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-empty-interface */
 /* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-empty-interface */
 
 //Abstract Factory
 abstract class AmplifiersFactory {
@@ -178,6 +178,17 @@ class FenderWithGreenBackStrategy implements ISoundStrategy {
   }
 }
 
+class LaneyWithHeritageStrategy implements ISoundStrategy {
+  constructor(
+    private readonly preAmp: IAmplifier,
+    private readonly speakers: ISpeaker,
+  ) {}
+  sound(volumen: number): void {
+    this.preAmp.sound(volumen);
+    this.speakers.sound();
+  }
+}
+
 class FullAmplifierContext {
   constructor(strategy: IAmplifier) {
     this._strategy = strategy;
@@ -218,3 +229,10 @@ customAmplifier.strategy = new FenderWithGreenBackStrategy(
 );
 
 customAmplifier.sound(2);
+
+customAmplifier.strategy = new LaneyWithHeritageStrategy(
+  laneyAmps1.getAmplifiers(),
+  heritage1.getSpeaker(),
+);
+
+customAmplifier.sound(3);
