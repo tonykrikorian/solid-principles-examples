@@ -152,25 +152,44 @@ interface ISpeaker {
 /**     Strategy pattern                                                                 */
 /*************************************************************************************** */
 
+interface ISoundStrategy {
+  sound(volumen: number): void;
+}
+
+class MarshallWithGreenBackStrategy implements ISoundStrategy {
+  constructor(
+    private readonly preAmp: IAmplifier,
+    private readonly speakers: ISpeaker,
+  ) {}
+  sound(volumen: number): void {
+    this.preAmp.sound(volumen);
+    this.speakers.sound();
+  }
+}
+
+class FenderWithGreenBackStrategy implements ISoundStrategy {
+  constructor(
+    private readonly preAmp: IAmplifier,
+    private readonly speakers: ISpeaker,
+  ) {}
+  sound(volumen: number): void {
+    this.preAmp.sound(volumen);
+    this.speakers.sound();
+  }
+}
+
 class FullAmplifierContext {
-  constructor(preAmpli: IAmplifier, speakers: ISpeaker) {
-    this._preAmp = preAmpli;
-    this._speaker = speakers;
+  constructor(strategy: IAmplifier) {
+    this._strategy = strategy;
   }
-  private _preAmp: IAmplifier;
+  private _strategy: IAmplifier;
 
-  public set preAmp(value: IAmplifier) {
-    this._preAmp = value;
-  }
-  private _speaker: ISpeaker;
-
-  public set speaker(value: ISpeaker) {
-    this._speaker = value;
+  public set strategy(value: IAmplifier) {
+    this._strategy = value;
   }
 
-  sound(volume: number): void {
-    this._preAmp.sound(volume);
-    this._speaker.sound();
+  sound(volumen: number): void {
+    this._strategy.sound(volumen);
   }
 }
 
@@ -185,23 +204,17 @@ const greenBack1: CelestionSpeakerFactory = new CelestionGreenBackFactory(
 const heritage1: CelestionSpeakerFactory = new CelestionHeritageFactory(8, 96);
 
 const customAmplifier = new FullAmplifierContext(
-  marshallAmps1.getAmplifiers(),
-  greenBack1.getSpeaker(),
+  new MarshallWithGreenBackStrategy(
+    marshallAmps1.getAmplifiers(),
+    greenBack1.getSpeaker(),
+  ),
 );
 
-customAmplifier.sound(10);
+customAmplifier.sound(6);
 
-customAmplifier.preAmp = fenderAmps1.getAmplifiers();
-customAmplifier.speaker = heritage1.getSpeaker();
+customAmplifier.strategy = new FenderWithGreenBackStrategy(
+  fenderAmps1.getAmplifiers(),
+  heritage1.getSpeaker(),
+);
 
-customAmplifier.sound(7);
-
-customAmplifier.preAmp = laneyAmps1.getAmplifiers();
-customAmplifier.speaker = greenBack1.getSpeaker();
-
-customAmplifier.sound(8);
-
-customAmplifier.preAmp = laneyAmps1.getAmplifiers();
-customAmplifier.speaker = heritage1.getSpeaker();
-
-customAmplifier.sound(8);
+customAmplifier.sound(2);
