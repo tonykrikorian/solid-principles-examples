@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
-import Buitre from '../models/classes/buitre.model';
-import Leon from '../models/classes/leon.model';
+
+import Buitre from '../models/classes/animals/buitre.model';
+import Leon from '../models/classes/animals/leon.model';
 
 const leon = new Leon();
 
