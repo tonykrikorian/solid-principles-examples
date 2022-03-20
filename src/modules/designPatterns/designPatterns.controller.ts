@@ -9,6 +9,7 @@ import {
 import RenewalsContext from './services/models/classes/strategies/context.model';
 import CreditCardRedbankStrategy from './services/models/classes/strategies/creditCardRedbankStrategy.model';
 import LegacyStrategy from './services/models/classes/strategies/legacyStrategy.model';
+import CreditCardKushkiStrategy from './services/models/classes/strategies/creditCardKushkiStrategy.model';
 
 @Controller('design-patterns')
 export default class DesignPatternsController {
@@ -32,5 +33,8 @@ export default class DesignPatternsController {
 
     (this.creditCard.getPaymentMethod().strategy =
       new CreditCardRedbankStrategy()).doPayment();
+
+    (this.creditCard.getPaymentMethod().strategy =
+      new CreditCardKushkiStrategy()).doPayment();
   }
 }
