@@ -10,6 +10,7 @@ import {
 } from './services/models/classes/factories/concreteCreators';
 import RenewalsContext from './services/models/classes/strategies/context.model';
 import CoreStrategy from './services/models/classes/strategies/coreStrategy.model';
+import CreditCardKushkiStrategy from './services/models/classes/strategies/creditCardKushkiStrategy.model';
 
 @Module({
   controllers: [DesignPatternsController],
@@ -21,7 +22,10 @@ import CoreStrategy from './services/models/classes/strategies/coreStrategy.mode
       },
     },
 
-    CreditCardFactory,
+    {
+      provide: 'creditCardFactory',
+      useFactory: () => new CreditCardFactory(new CreditCardKushkiStrategy()),
+    },
     WebpayFactory,
     BankTransferFactory,
     BankCheckFactory,
