@@ -9,6 +9,8 @@ export default class AbstractionController {
     private readonly savingsAccountService: AbstractAccountDeposit,
     @Inject('CurrentAccount')
     private readonly currentAccountService: AbstractAccountDeposit,
+    @Inject('FanAccount')
+    private readonly fanAccountService: AbstractAccountDeposit,
   ) {}
 
   @Post('savings-account-deposit')
@@ -19,5 +21,9 @@ export default class AbstractionController {
   @Post('current-account-deposit')
   public currentAccountDeposit() {
     return this.currentAccountService.deposit();
+  }
+  @Post('fan-account-deposit')
+  public fanAccountDeposit() {
+    return this.fanAccountService.deposit();
   }
 }
